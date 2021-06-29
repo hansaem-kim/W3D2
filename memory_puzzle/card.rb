@@ -17,6 +17,10 @@ class Card
         @face_up = true
     end
 
+    def display
+        return @value if @face_up
+    end
+
     # def to_s
 
     # end
