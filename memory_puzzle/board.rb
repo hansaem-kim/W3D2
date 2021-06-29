@@ -17,32 +17,59 @@ class Board
     def populate
         alphabet = ("A".."Z").to_a
         (@size*@size/2).times do
-            card = Card.new(alphabet.sample)
-            alphabet.delete(card.value)
+            letter = alphabet.sample
+            alphabet.delete(letter)
+
             2.times do
+
+                card = Card.new(letter)
                 not_nil = true
                 while not_nil
+
                     row = rand(0...@size)
                     col = rand(0...@size)
+
                     if !@grid[row][col]
                         @grid[row][col] = card
-                        not_nil = false
+                        not_nil = false     
                     end
                 end
             end
         end
     end
 
-    def printer
+    def render
         @grid.each do |sub_array|
-            sub_array.each do |ele|
-                print ele.value
+            sub_array.each do |card|
+                if card.face_up
+                    print card.value + ' '
+                else
+                    print '  ' 
+                end
             end
             puts "   "
         end
     end
+
+    def won?
+        @grid.each do |sub_array|
+            return false if sub_array.any? { |card| !card.face_up }
+        end
+        true
+    end
+
+    def reveal(guess_pos)
+        row, col = guess_pos
+        @grid[row][col].reveal unless @grid[row][col].face_up
+        @grid[row][col].value
+    end
+
 end
 
 board = Board.new(4)
 board.populate
-board.printer
+
+board.render
+board.reveal([1,3])
+board.render
+# p board.won?

@@ -2,7 +2,7 @@ require 'byebug'
 
 class Card
 
-    attr_reader :value
+    attr_reader :value, :face_up
 
     def initialize(value) 
         @value = value
