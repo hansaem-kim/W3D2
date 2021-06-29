@@ -1,43 +1,30 @@
 require 'byebug'
 require_relative './board.rb'
 require_relative './card.rb'
+require_relative './human_player.rb'
 
 class Game
 
     def initialize
         # @board = Board.new(n)
         @prev_guessed_pos = nil
+        @human_player = HumanPlayer.new
 
     end
-
-    def get_user_guess
-        print 'Enter two numbers separated by a space.'
-        position = gets.chomp.split(' ').map(&:to_i)
-    end
-    
-    # def board_size
-    #     puts 'Enter a number for Board size'
-    #     gets.chomp.to_i
-    # end
 
     def play
-        size = 1
-        until size.even?
-            puts "Enter any even number for size of Board: "
-            size = gets.chomp.to_i
-        end
-        board = Board.new(size)
+        board = @human_player.board
         board.populate
         until board.won?
             system("clear")
             board.render
-            @prev_guessed_pos = self.get_user_guess
+            @prev_guessed_pos = @human_player.get_user_guess
 
             board.reveal(@prev_guessed_pos)
             system("clear")
             board.render
 
-            current_guess = self.get_user_guess
+            current_guess = @human_player.get_user_guess
             board.reveal(current_guess)
             system("clear")
             board.render

@@ -21,10 +21,6 @@ class Card
         return @value if @face_up
     end
 
-    # def to_s
-
-    # end
-
     def ==(other_card)
         self.value == other_card.value
     end

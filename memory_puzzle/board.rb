@@ -39,24 +39,26 @@ class Board
     end
 
     def render
-        print " "
+        print "  "
+        
         (0...@size).each do |num|
             print num.to_s + " "
         end
+
         puts " "
-        (0...@size).each do |num|
-            @grid.each do |sub_array|
-                print num.to_s + " "
-                sub_array.each do |card|
-                    if card.face_up
-                        print card.value + ' '
-                    else
-                        print '  ' 
-                    end
+        counter = (0...@size).to_a
+        @grid.each do |sub_array|
+            print counter.shift.to_s + " "
+            sub_array.each do |card|
+                if card.face_up
+                    print card.value + ' '
+                else
+                    print '  ' 
                 end
-                puts "   "
             end
+            puts "   "
         end
+      
     end
 
     def won?
