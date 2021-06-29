@@ -4,9 +4,10 @@ require_relative './card.rb'
 
 class Game
 
-    def initialize(n)
-        @board = Board.new(n)
+    def initialize
+        # @board = Board.new(n)
         @prev_guessed_pos = nil
+
     end
 
     def get_user_guess
@@ -19,24 +20,40 @@ class Game
     #     gets.chomp.to_i
     # end
 
-    def play 
-
-        @board.render
-        @prev_guessed_pos = self.get_user_guess
-
-        @board.reveal(@prev_guessed_pos)
-        @board.render
-
-        current_guess = self.get_user_guess
-        @board.reveal(current_guess)
-        @board.render
-        if @board.grid[prev_guessed_pos[0]][prev_guessed_pos[1]] == @board.grid[current_guess[0]][current_guess[1]]
-            puts 'Correct'
-        else
-            @board.grid[prev_guessed_pos[0]][prev_guessed_pos[1]].hide
-            @board.grid[current_guess[0]][current_guess[1]].hide
+    def play
+        size = 1
+        until size.even?
+            puts "Enter any even number for size of Board: "
+            size = gets.chomp.to_i
         end
+        board = Board.new(size)
+        board.populate
+        until board.won?
+            system("clear")
+            board.render
+            @prev_guessed_pos = self.get_user_guess
 
+            board.reveal(@prev_guessed_pos)
+            system("clear")
+            board.render
+
+            current_guess = self.get_user_guess
+            board.reveal(current_guess)
+            system("clear")
+            board.render
+            if board.grid[@prev_guessed_pos[0]][@prev_guessed_pos[1]] == board.grid[current_guess[0]][current_guess[1]]
+                puts 'Correct'
+            else
+                board.grid[@prev_guessed_pos[0]][@prev_guessed_pos[1]].hide
+                board.grid[current_guess[0]][current_guess[1]].hide
+                puts "Incorrect"
+                sleep(3)
+            end
+        end
+        puts "Great Job!"
     end
 
 end
+
+g = Game.new
+g.play

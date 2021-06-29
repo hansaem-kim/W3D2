@@ -39,21 +39,31 @@ class Board
     end
 
     def render
-        @grid.each do |sub_array|
-            sub_array.each do |card|
-                if card.face_up
-                    print card.value + ' '
-                else
-                    print '  ' 
+        print " "
+        (0...@size).each do |num|
+            print num.to_s + " "
+        end
+        puts " "
+        (0...@size).each do |num|
+            @grid.each do |sub_array|
+                print num.to_s + " "
+                sub_array.each do |card|
+                    if card.face_up
+                        print card.value + ' '
+                    else
+                        print '  ' 
+                    end
                 end
+                puts "   "
             end
-            puts "   "
         end
     end
 
     def won?
         @grid.each do |sub_array|
-            return false if sub_array.any? { |card| !card.face_up }
+            return false if sub_array.any? do |card| 
+                !card.face_up
+            end
         end
         true
     end
@@ -65,11 +75,3 @@ class Board
     end
 
 end
-
-board = Board.new(4)
-board.populate
-
-board.render
-board.reveal([1,3])
-board.render
-# p board.won?
